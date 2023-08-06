@@ -27,6 +27,7 @@
 #include "scores.hpp"
 #include "mod_tools.hpp"
 #include "menu.hpp"
+#include "mazes.hpp"
 
 int startfloor = 0;
 
@@ -74,6 +75,24 @@ int monsterCurve(int level)
 					return SKELETON;
 				}
 				break;
+		}
+	}
+	//!! custom gnomish mines override
+	else if (!strncmp(map.name, "The Gnomish Mines", 17)) {
+		switch ( rand() % 10 )
+		{
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+				return GNOME;
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+				return TROLL;
 		}
 	}
 	else if ( !strncmp(map.name, "The Swamp", 9) )     // the swamp
@@ -331,6 +350,10 @@ int monsterCurve(int level)
 
 int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> mapParameters)
 {
+	if (strcmp(levelset, "gnomishmines") == 0) {
+		return generateCustomMazeLevel(levelset, seed, mapParameters);
+	}
+
 	char* sublevelname, *subRoomName;
 	char sublevelnum[3];
 	map_t* tempMap, *subRoomMap;
@@ -1223,6 +1246,8 @@ int generateDungeon(char* levelset, Uint32 seed, std::tuple<int, int, int, int> 
 						}
 						else
 						{
+							//printlog("placing map tile (tempmap):");
+							//printlog(std::to_string(tempMap->tiles[z + (y0 - y) * MAPLAYERS + (x0 - x) * MAPLAYERS * tempMap->height]).c_str());
 							map.tiles[z + y0 * MAPLAYERS + x0 * MAPLAYERS * map.height] = tempMap->tiles[z + (y0 - y) * MAPLAYERS + (x0 - x) * MAPLAYERS * tempMap->height];
 						}
 
