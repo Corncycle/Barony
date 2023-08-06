@@ -387,6 +387,7 @@ int generateCustomMazeLevel(char* levelset, Uint32 seed, std::tuple<int, int, in
 		conductGameChallenges[CONDUCT_MODDED] = 1;
 	}
 
+	// test comment
 	// store this map's seed
 	mapseed = seed;
 	prng_seed_bytes(&mapseed, sizeof(mapseed));
